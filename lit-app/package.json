@@ -1,24 +1,24 @@
 {
   "devDependencies": {
-    "eslint": "^7.30.0",
+    "@open-wc/building-rollup": "^1.10.0",
     "@open-wc/eslint-config": "^4.3.0",
-    "@typescript-eslint/parser": "^4.28.2",
+    "@open-wc/testing": "^2.5.33",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
-    "prettier": "^2.2.1",
+    "@typescript-eslint/parser": "^4.28.2",
+    "@web/dev-server": "^0.1.18",
+    "@web/dev-server-storybook": "^0.3.5",
+    "@web/test-runner": "^0.12.20",
+    "concurrently": "^5.3.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^7.30.0",
     "eslint-config-prettier": "^7.2.0",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.4",
-    "@web/test-runner": "^0.12.20",
-    "@open-wc/testing": "^2.5.33",
-    "@web/dev-server-storybook": "^0.3.5",
-    "@open-wc/building-rollup": "^1.10.0",
-    "deepmerge": "^4.2.2",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
-    "@web/dev-server": "^0.1.18",
-    "concurrently": "^5.3.0",
-    "typescript": "^4.3.5",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
   },
   "scripts": {
     "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
@@ -37,8 +37,8 @@
   "author": "lit-app",
   "license": "MIT",
   "dependencies": {
-    "lit-html": "^1.4.1",
-    "lit-element": "^2.5.1"
+    "lit-element": "^2.5.1",
+    "lit-html": "^1.4.1"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -55,13 +55,7 @@
         "error"
       ],
       "import/no-unresolved": "off",
-      "import/extensions": [
-        "error",
-        "always",
-        {
-          "ignorePackages": true
-        }
-      ]
+      "import/extensions": "off"
     }
   },
   "prettier": {
