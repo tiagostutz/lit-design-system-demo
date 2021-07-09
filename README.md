@@ -38,3 +38,7 @@ Docker image with NGinx
 ```bash
 docker-compose up --build
 ```
+
+## Project Structure
+
+This project, besides the Lit Web Component demo part, emulates kind of how would it be to build (or extend) a Design System, so the **src** folder has a **design-system** folder that would be an external module in production grade applications. But, for the sake of simplicity, the design system components are in the same code base here but within this specific folder.
