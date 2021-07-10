@@ -3,7 +3,10 @@ import { Position } from '../../common-types/positioning';
 import { Breakpoints } from '../../common-types/sizes';
 
 /**
- * @slot content of the title
+ * This element is a wrapper container for the page.
+ * It basically provides a way of positioning globally the content (like centered or not)
+ *
+ * @slot content of the Container
  */
 @customElement('main-container')
 export class MainContainer extends LitElement {
