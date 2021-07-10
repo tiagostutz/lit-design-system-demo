@@ -29,8 +29,29 @@ const Template: Story<ArgTypes> = ({
   >
 `;
 
-export const MainContainer = Template.bind({});
-MainContainer.args = {
+export const PositionNone = Template.bind({});
+PositionNone.args = {
+  position: 'none',
+  maxWidth: 'md',
+};
+export const PositionCenter = Template.bind({});
+PositionCenter.args = {
+  position: 'center',
+  maxWidth: 'md',
+};
+
+export const MaxWidthSM = Template.bind({});
+MaxWidthSM.args = {
+  position: 'center',
+  maxWidth: 'sm',
+};
+export const MaxWidthMD = Template.bind({});
+MaxWidthMD.args = {
+  position: 'center',
+  maxWidth: 'md',
+};
+export const MaxWidth2LG = Template.bind({});
+MaxWidth2LG.args = {
   position: 'center',
   maxWidth: 'lg',
 };
