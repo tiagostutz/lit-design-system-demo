@@ -55,7 +55,7 @@ describe('EditableInlineText editMode=edit', () => {
   });
 
   it('Renders a `input` with readonly behavior', () => {
-    element.readOnly = true;
+    element.editMode = 'readOnlyEdit';
     const input = element.shadowRoot!.querySelector('input')!;
     const span = element.shadowRoot!.querySelector('span')!;
     expect(span).to.not.exist;
@@ -81,8 +81,7 @@ describe('EditableInlineText editMode=edit  and readOnly=true', () => {
   beforeEach(async () => {
     element = await fixture(
       html`<editable-inline-text
-        edit-mode="edit"
-        read-only="true"
+        edit-mode="readOnlyEdit"
         text="Text original"
       ></editable-inline-text>`
     );
@@ -205,14 +204,14 @@ describe('EditableInlineText Span Double Clicked toggling editMode', () => {
     expect(element.editMode).to.equal('edit');
   });
 
-  it('Change editMode toggling double click', () => {
-    element.readOnly = true;
+  it('Dont change editMode even toggling double click in readOnly', () => {
+    element.editMode = 'readOnlyDisplay';
     const input = element.shadowRoot!.querySelector('input')!;
     const span = element.shadowRoot!.querySelector('span')!;
     expect(input).to.not.exist;
     expect(span).to.exist;
 
-    expect(element.editMode).to.equal('display');
+    expect(element.editMode).to.equal('readOnlyDisplay');
     // Fire the change object
     span.dispatchEvent(
       new Event('dblclick', {
@@ -221,7 +220,7 @@ describe('EditableInlineText Span Double Clicked toggling editMode', () => {
         composed: false,
       })
     );
-    expect(element.editMode).to.equal('display'); // should not change the editMode because it is in "readOnly" mode
+    expect(element.editMode).to.equal('readOnlyDisplay'); // should not change the editMode because it is in "readOnly" mode
   });
 
   it('passes the a11y audit', async () => {

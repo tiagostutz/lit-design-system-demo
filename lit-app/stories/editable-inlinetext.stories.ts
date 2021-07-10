@@ -16,37 +16,28 @@ interface Story<T> {
 
 interface ArgTypes {
   editMode?: EditMode;
-  readOnly?: boolean;
 }
 
-const Template: Story<ArgTypes> = ({
-  editMode = 'edit',
-  readOnly = false,
-}: ArgTypes) => html`
+const Template: Story<ArgTypes> = ({ editMode = 'edit' }: ArgTypes) => html`
   <editable-inline-text
     edit-mode=${editMode}
-    read-only=${readOnly}
     text="Text content"
   ></editable-inline-text>
 `;
 
 export const EditModeDisplayReadOnly = Template.bind({});
 EditModeDisplayReadOnly.args = {
-  editMode: 'display',
-  readOnly: true,
+  editMode: 'readOnlyDisplay',
 };
 export const EditModeEditReadOnly = Template.bind({});
 EditModeEditReadOnly.args = {
-  editMode: 'edit',
-  readOnly: true,
+  editMode: 'readOnlyEdit',
 };
 export const EditModeDisplay = Template.bind({});
 EditModeDisplay.args = {
   editMode: 'display',
-  readOnly: false,
 };
 export const EditModeEdit = Template.bind({});
 EditModeEditReadOnly.args = {
   editMode: 'edit',
-  readOnly: false,
 };

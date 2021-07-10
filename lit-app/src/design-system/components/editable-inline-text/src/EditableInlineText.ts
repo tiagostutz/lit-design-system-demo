@@ -2,25 +2,17 @@ import { LitElement, html, customElement, property } from 'lit-element';
 
 /**
  * Types of component display:
- * - edit: an input is presented to receive user input text
- * - display: an span is presented to display the text property
+ * - edit: input[text] visible and enabled
+ * - display: span visible and handle double-click to presente input text to edit text
+ * - readOnlyEdit: input[text] visible but disabled
+ * - readOnlyDisplay: span visible but with doubleClick to edit disabled
  */
-export type EditMode = 'edit' | 'display';
+export type EditMode = 'edit' | 'display' | 'readOnlyEdit' | 'readOnlyDisplay';
 
-/**
- * @slot title text
- */
 @customElement('editable-inline-text')
 export class EditableInlineText extends LitElement {
   @property({ reflect: true })
   text: String = '';
-
-  /**
-   * readOnly = true && editMode = 'edit' => input disabled
-   * * readOnly = true && editMode = 'display' => span with doubleClick disabled
-   */
-  @property({ attribute: 'read-only' })
-  readOnly: boolean = false;
 
   /**
    * Use custom property accessor to fire an event when changing the value
@@ -48,13 +40,19 @@ export class EditableInlineText extends LitElement {
     this.requestUpdate('editMode', oldValue);
   }
 
+  isReadOnly() {
+    return (
+      this.editMode === 'readOnlyDisplay' || this.editMode === 'readOnlyEdit'
+    );
+  }
+
   /**
    * Handler of the input text value change event
    *
    * @param e HTMLInputElement event with the value to be assigned to the text property
    */
   onTextInputChange(e: Event): void {
-    if (this.readOnly) {
+    if (this.isReadOnly()) {
       return;
     }
     const element = e.target as HTMLInputElement;
@@ -76,7 +74,7 @@ export class EditableInlineText extends LitElement {
    * and toggling to edit mode
    */
   onSpanDoubleClicked() {
-    if (!this.readOnly) {
+    if (!this.isReadOnly()) {
       this.editMode = 'edit';
     }
   }
@@ -88,10 +86,15 @@ export class EditableInlineText extends LitElement {
       >`;
     }
 
+    // readOnlyDisplay: double click disabled
+    if (this.editMode === 'readOnlyDisplay') {
+      return html`<span>${this.text}</span>`;
+    }
+
     return html`<input
-      ?disabled=${this.readOnly}
+      ?disabled=${this.isReadOnly()}
       type="text"
-      aria-label="edit value"
+      aria-label="type the text value"
       .value=${this.text}
       @change=${this.onTextInputChange}
       @keyup=${this.onEnterKeyPressed}
