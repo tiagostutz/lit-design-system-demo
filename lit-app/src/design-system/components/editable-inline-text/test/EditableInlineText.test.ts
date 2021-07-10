@@ -205,6 +205,25 @@ describe('EditableInlineText Span Double Clicked toggling editMode', () => {
     expect(element.editMode).to.equal('edit');
   });
 
+  it('Change editMode toggling double click', () => {
+    element.readOnly = true;
+    const input = element.shadowRoot!.querySelector('input')!;
+    const span = element.shadowRoot!.querySelector('span')!;
+    expect(input).to.not.exist;
+    expect(span).to.exist;
+
+    expect(element.editMode).to.equal('display');
+    // Fire the change object
+    span.dispatchEvent(
+      new Event('dblclick', {
+        bubbles: true,
+        cancelable: false,
+        composed: false,
+      })
+    );
+    expect(element.editMode).to.equal('display'); // should not change the editMode because it is in "readOnly" mode
+  });
+
   it('passes the a11y audit', async () => {
     await expect(element).shadowDom.to.be.accessible();
   });

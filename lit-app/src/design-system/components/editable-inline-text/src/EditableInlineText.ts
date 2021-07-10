@@ -15,6 +15,10 @@ export class EditableInlineText extends LitElement {
   @property({ reflect: true })
   text: String = '';
 
+  /**
+   * readOnly = true && editMode = 'edit' => input disabled
+   * * readOnly = true && editMode = 'display' => span with doubleClick disabled
+   */
   @property({ attribute: 'read-only' })
   readOnly: boolean = false;
 
@@ -72,7 +76,9 @@ export class EditableInlineText extends LitElement {
    * and toggling to edit mode
    */
   onSpanDoubleClicked() {
-    this.editMode = 'edit';
+    if (!this.readOnly) {
+      this.editMode = 'edit';
+    }
   }
 
   render() {
