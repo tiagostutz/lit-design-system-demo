@@ -26,13 +26,13 @@ describe('EditableInlineText defaults', () => {
   });
 });
 
-describe('EditableInlineText editMode=editing', () => {
+describe('EditableInlineText editMode=edit', () => {
   let element: EditableInlineText;
   beforeEach(async () => {
     element = await fixture(
       html`<editable-inline-text
-        edit-mode="editing"
-        text="Text editing"
+        edit-mode="edit"
+        text="Text original"
       ></editable-inline-text>`
     );
   });
@@ -41,7 +41,7 @@ describe('EditableInlineText editMode=editing', () => {
     const input = element.shadowRoot!.querySelector('input')!;
     const span = element.shadowRoot!.querySelector('span')!;
     expect(span).to.not.exist;
-    expect(input.value).to.equal('Text editing');
+    expect(input.value).to.equal('Text original');
 
     // Emulate like the user typed a value
     input.value = 'Text Modified';
@@ -59,7 +59,7 @@ describe('EditableInlineText editMode=editing', () => {
     const input = element.shadowRoot!.querySelector('input')!;
     const span = element.shadowRoot!.querySelector('span')!;
     expect(span).to.not.exist;
-    expect(input.value).to.equal('Text editing');
+    expect(input.value).to.equal('Text original');
 
     // Emulate like the user typed a value
     input.value = 'Text editing';
@@ -68,7 +68,7 @@ describe('EditableInlineText editMode=editing', () => {
       new Event('change', { bubbles: true, cancelable: false, composed: false })
     );
     expect(input.value).to.equal('Text editing');
-    expect(element.text).to.equal('Text editing');
+    expect(element.text).to.equal('Text original'); // as the internal readOnly = true then the value cannot be changed
   });
 
   it('passes the a11y audit', async () => {
@@ -76,14 +76,14 @@ describe('EditableInlineText editMode=editing', () => {
   });
 });
 
-describe('EditableInlineText editMode=editing  and readOnly=true', () => {
+describe('EditableInlineText editMode=edit  and readOnly=true', () => {
   let element: EditableInlineText;
   beforeEach(async () => {
     element = await fixture(
       html`<editable-inline-text
-        edit-mode="editing"
+        edit-mode="edit"
         read-only="true"
-        text="Text editing"
+        text="Text original"
       ></editable-inline-text>`
     );
   });
@@ -92,17 +92,117 @@ describe('EditableInlineText editMode=editing  and readOnly=true', () => {
     const input = element.shadowRoot!.querySelector('input')!;
     const span = element.shadowRoot!.querySelector('span')!;
     expect(span).to.not.exist;
-    expect(input.value).to.equal('Text editing');
+    expect(input.value).to.equal('Text original');
 
     // Emulate like the user typed a value
-    input.value = 'Text editing';
+    input.value = 'Text modified';
     // Fire the change object
     input.dispatchEvent(
       new Event('change', { bubbles: true, cancelable: false, composed: false })
     );
     expect(input.disabled).to.equal(true);
-    expect(input.value).to.equal('Text editing');
-    expect(element.text).to.equal('Text editing');
+    // due to being readonly, even thought the input value has changed, the property can't change
+    expect(input.value).to.equal('Text modified');
+    expect(element.text).to.equal('Text original');
+  });
+
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible();
+  });
+});
+
+describe('EditableInlineText Enter triggered', () => {
+  let element: EditableInlineText;
+  beforeEach(async () => {
+    element = await fixture(
+      html`<editable-inline-text edit-mode="edit"></editable-inline-text>`
+    );
+  });
+
+  it('Change form `input` to `span` based on editMode', () => {
+    const input = element.shadowRoot!.querySelector('input')!;
+    const span = element.shadowRoot!.querySelector('span')!;
+    expect(span).to.not.exist;
+    expect(input.value).to.equal('');
+
+    // Emulate like the user typed a value
+    input.value = 'Text Modified';
+    // Fire the change object
+    input.dispatchEvent(
+      new Event('change', { bubbles: true, cancelable: false, composed: false })
+    );
+    expect(input.value).to.equal('Text Modified');
+    expect(element.text).to.equal('Text Modified');
+    expect(input.disabled).to.equal(false);
+
+    // Not working properly. The key property is not being set
+    // input.dispatchEvent(
+    //   new KeyboardEvent('keyup', {
+    //     key: 'Enter',
+    //     bubbles: true,
+    //     cancelable: false,
+    //     composed: false
+    //   })
+    // );
+  });
+
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible();
+  });
+});
+
+describe('EditableInlineText editModeChanged fired', () => {
+  let element: EditableInlineText;
+  const _handleEditModeChanged = (e: any) => {
+    expect(e.detail.editMode).to.equal('display');
+  };
+  beforeEach(async () => {
+    element = await fixture(
+      html`<editable-inline-text
+        edit-mode="edit"
+        @editModeChanged=${_handleEditModeChanged}
+      ></editable-inline-text>`
+    );
+  });
+
+  it('Set editMode and receive fire event', () => {
+    const input = element.shadowRoot!.querySelector('input')!;
+    const span = element.shadowRoot!.querySelector('span')!;
+    expect(span).to.not.exist;
+    expect(input.value).to.equal('');
+
+    element.editMode = 'display';
+  });
+
+  it('passes the a11y audit', async () => {
+    await expect(element).shadowDom.to.be.accessible();
+  });
+});
+
+describe('EditableInlineText Span Double Clicked toggling editMode', () => {
+  let element: EditableInlineText;
+  beforeEach(async () => {
+    element = await fixture(
+      html`<editable-inline-text edit-mode="display"></editable-inline-text>`
+    );
+  });
+
+  it('Change editMode toggling double click', () => {
+    const input = element.shadowRoot!.querySelector('input')!;
+    const span = element.shadowRoot!.querySelector('span')!;
+    expect(input).to.not.exist;
+    expect(span).to.exist;
+
+    expect(element.editMode).to.equal('display');
+    // Fire the change object
+    span.dispatchEvent(
+      new Event('dblclick', {
+        bubbles: true,
+        cancelable: false,
+        composed: false,
+      })
+    );
+    expect(element.editMode).to.equal('edit');
   });
 
   it('passes the a11y audit', async () => {

@@ -18,10 +18,38 @@ export class EditableInlineText extends LitElement {
   @property({ attribute: 'read-only' })
   readOnly: boolean = false;
 
-  @property({ attribute: 'edit-mode' })
-  editMode: EditMode = 'display';
+  /**
+   * Use custom property accessor to fire an event when changing the value
+   */
+  private _editMode: EditMode = 'display';
 
-  onTextInputChange(e: Event) {
+  @property({ attribute: 'edit-mode' })
+  get editMode(): EditMode {
+    return this._editMode;
+  }
+
+  set editMode(value: EditMode) {
+    const oldValue = this._editMode;
+
+    const event = new CustomEvent('editModeChanged', {
+      detail: {
+        editMode: value,
+      },
+    });
+
+    this._editMode = value;
+    if (value !== oldValue) {
+      this.dispatchEvent(event);
+    }
+    this.requestUpdate('editMode', oldValue);
+  }
+
+  /**
+   * Handler of the input text value change event
+   *
+   * @param e HTMLInputElement event with the value to be assigned to the text property
+   */
+  onTextInputChange(e: Event): void {
     if (this.readOnly) {
       return;
     }
@@ -29,9 +57,29 @@ export class EditableInlineText extends LitElement {
     this.text = element.value;
   }
 
+  /**
+   * Handler of the Enter Key pressed
+   * @param e KeyboardEvent to check the key pressed
+   */
+  onEnterKeyPressed(e: KeyboardEvent) {
+    if (e.key.toUpperCase() === 'ENTER') {
+      this.editMode = 'display';
+    }
+  }
+
+  /**
+   * Handler of double clicking the span element
+   * and toggling to edit mode
+   */
+  onSpanDoubleClicked() {
+    this.editMode = 'edit';
+  }
+
   render() {
     if (this.editMode === 'display') {
-      return html`<span>${this.text}</span>`;
+      return html`<span @dblclick=${this.onSpanDoubleClicked}
+        >${this.text}</span
+      >`;
     }
 
     return html`<input
@@ -40,6 +88,7 @@ export class EditableInlineText extends LitElement {
       aria-label="edit value"
       .value=${this.text}
       @change=${this.onTextInputChange}
+      @keyup=${this.onEnterKeyPressed}
     />`;
   }
 }
