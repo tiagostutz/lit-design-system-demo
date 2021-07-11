@@ -10,8 +10,14 @@ import '../../../design-system/components/editable-check';
 import '../../../design-system/components/button';
 import { designSystem } from '../../../design-system/style';
 
+/**
+ * This is the main component of the ToDo application.
+ * It has the list of Todo items with its respective remove button
+ * and have the "add new item" button also, to create new items in the Todo list
+ */
 @customElement('to-do')
 export class ToDo extends LitElement {
+  // Merge `designSystem` base style with specifics of this component
   static get styles() {
     return [
       designSystem,
@@ -32,9 +38,17 @@ export class ToDo extends LitElement {
     ];
   }
 
+  /**
+   * List of Todo items being managed (add, remove, marked completed, edited)
+   */
   @property()
   items: Array<TodoItem> = [];
 
+  /**
+   * This functions invokes the service that creates a new item
+   * After the item is created, retrieve all the items using the
+   * service to retrieve all (updated list)
+   */
   async addNewItem() {
     await createNewItem();
 
@@ -42,6 +56,11 @@ export class ToDo extends LitElement {
     this.items = [...(await getCurrentItems())];
   }
 
+  /**
+   * Removes and item from the list invoking the respetive service
+   * and then updating the list
+   * @param item to be removed
+   */
   async removeItem(item: TodoItem) {
     await deleteItem(item);
 
@@ -49,6 +68,13 @@ export class ToDo extends LitElement {
     this.items = [...(await getCurrentItems())];
   }
 
+  /**
+   * Event handler for the event fired when an item modifies.
+   * This modification could be it's text or its checked property
+   *
+   * @param item item that has been updated
+   * @param param1 contains the two possible types of update: text or if was checked
+   */
   itemUpdated(
     item: TodoItem,
     { checked, text }: { checked: Boolean; text: String }

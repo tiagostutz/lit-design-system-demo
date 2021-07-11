@@ -44,7 +44,7 @@ docker-compose up --build
 
 ## Spec
 
-- You can add and remove to do items
+- You can add and remove ToDo items
 - To edit an item, **double click it**
 - To mark an item as done, click the checkbox
     - When an item is marked as done it cannot be edited (double click disabled)
@@ -52,3 +52,9 @@ docker-compose up --build
 ## Project Structure
 
 This project, besides the Lit Web Component demo part, emulates kind of how would it be to build (or extend) a Design System, so the **src** folder has a **design-system** folder that would be an external module in production grade applications. But, for the sake of simplicity, the design system components are in the same code base here but within this specific folder.
+
+There's a folder named **src/component** which basically has the Todo components and its business logic.
+
+There's also a **stories** forlder for the components StoryBook
+
+The tests of the design-system components are in the same folder as them

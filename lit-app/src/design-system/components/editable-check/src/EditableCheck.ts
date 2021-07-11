@@ -26,14 +26,13 @@ export class EditableCheck extends EditableInlineText {
       this._inputCheck?.removeAttribute('checked');
     }
 
-    const event = new CustomEvent('checkToggled', {
-      detail: {
-        checked: newValue,
-      },
-    });
-
     this.requestUpdate('checked', oldValue).then(() => {
       if (newValue !== oldValue) {
+        const event = new CustomEvent('checkToggled', {
+          detail: {
+            checked: newValue,
+          },
+        });
         this.dispatchEvent(event);
       }
     });
