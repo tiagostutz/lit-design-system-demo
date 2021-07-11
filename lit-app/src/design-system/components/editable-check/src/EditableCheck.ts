@@ -2,6 +2,10 @@ import { html, customElement, property, query } from 'lit-element';
 import { TextDecoration } from '../../common-types/text';
 import { EditableInlineText } from '../../editable-inline-text';
 
+/**
+ * Events:
+ * @checkToggled: when the item has been checked
+ */
 @customElement('editable-check')
 export class EditableCheck extends EditableInlineText {
   /**
