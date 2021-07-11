@@ -1,4 +1,5 @@
-import { LitElement, html, customElement, property } from 'lit-element';
+import { LitElement, html, customElement, property, css } from 'lit-element';
+import { TextDecoration } from '../../common-types/text';
 
 /**
  * Types of component display:
@@ -11,6 +12,17 @@ export type EditMode = 'edit' | 'display' | 'readOnlyEdit' | 'readOnlyDisplay';
 
 @customElement('editable-inline-text')
 export class EditableInlineText extends LitElement {
+  static get styles() {
+    return css`
+      .line-through {
+        text-decoration: line-through;
+      }
+    `;
+  }
+
+  @property({ attribute: 'text-decoration' })
+  textDecoration!: TextDecoration;
+
   @property({ reflect: true })
   text: String = '';
 
@@ -81,14 +93,16 @@ export class EditableInlineText extends LitElement {
 
   render() {
     if (this.editMode === 'display') {
-      return html`<span @dblclick=${this.onSpanDoubleClicked}
+      return html`<span
+        @dblclick=${this.onSpanDoubleClicked}
+        class=${this.textDecoration}
         >${this.text}</span
       >`;
     }
 
     // readOnlyDisplay: double click disabled
     if (this.editMode === 'readOnlyDisplay') {
-      return html`<span>${this.text}</span>`;
+      return html`<span class=${this.textDecoration}>${this.text}</span>`;
     }
 
     return html`<input

@@ -12,7 +12,7 @@ export class LitApp extends LitElement {
       <main>
         <main-container max-width="lg">
           <h1-title>${this.title}</h1-title>
-          <editable-check></editable-check>
+          <editable-check text="Item 1"></editable-check>
         </main-container>
       </main>
     `;

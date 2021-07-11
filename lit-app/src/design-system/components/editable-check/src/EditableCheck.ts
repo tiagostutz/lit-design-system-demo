@@ -1,4 +1,5 @@
 import { html, customElement, property, query } from 'lit-element';
+import { TextDecoration } from '../../common-types/text';
 import { EditableInlineText } from '../../editable-inline-text';
 
 @customElement('editable-check')
@@ -42,9 +43,11 @@ export class EditableCheck extends EditableInlineText {
   _inputCheck!: HTMLInputElement;
 
   render() {
-    let composedEditMode = this.editMode;
+    let computedEditMode = this.editMode;
+    let computedTextDecoration!: TextDecoration;
     if (this.checked) {
-      composedEditMode = 'readOnlyDisplay';
+      computedEditMode = 'readOnlyDisplay';
+      computedTextDecoration = 'line-through';
     }
 
     return html`<input
@@ -56,7 +59,8 @@ export class EditableCheck extends EditableInlineText {
         }}
       /><editable-inline-text
         text=${this.text}
-        edit-mode=${composedEditMode}
+        edit-mode=${computedEditMode}
+        text-decoration=${computedTextDecoration}
       ></editable-inline-text>`;
   }
 }
