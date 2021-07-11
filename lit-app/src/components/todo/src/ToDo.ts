@@ -49,7 +49,7 @@ export class ToDo extends LitElement {
     this.items = [...(await getCurrentItems())];
   }
 
-  async itemUpdated(
+  itemUpdated(
     item: TodoItem,
     { checked, text }: { checked: Boolean; text: String }
   ) {
@@ -61,10 +61,9 @@ export class ToDo extends LitElement {
       mutatedItem = Object.assign(item, { text });
     }
 
-    updateTodoItem(mutatedItem);
-
-    // reload items
-    this.items = [...(await getCurrentItems())];
+    if (this.items) {
+      updateTodoItem(mutatedItem);
+    }
   }
 
   render() {

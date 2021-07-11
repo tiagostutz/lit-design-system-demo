@@ -78,7 +78,7 @@ export class EditableCheck extends EditableInlineText {
         ?disabled=${this.isReadOnly()}
         aria-label="click to mark the item"
         @click=${() => {
-          this.checked = !this.checked;
+          this.checked = !this._checked;
         }}
       /><editable-inline-text
         text=${this.text}
