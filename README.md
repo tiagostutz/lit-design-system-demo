@@ -2,6 +2,9 @@
 
 The classic **To Do Application** demo project showing Lit components with basic Design System and a very "vanilla" approach on component construction to show that it is possible to play with the foundations of JS and HTML in componentizationa and give an overview on how things happen under the hood.
 
+<img src="to-do-screenshot.png" height="400" />
+
+---
 > This project was scaffolded with `npm init @open-wc` - [Open Web Components](https://open-wc.org/) using NodeJS v.14
 
 ## Getting started
