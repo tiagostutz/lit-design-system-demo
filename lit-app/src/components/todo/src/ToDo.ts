@@ -77,7 +77,7 @@ export class ToDo extends LitElement {
    * @param item item that has been updated
    * @param param1 contains the two possible types of update: text or if was checked
    */
-  itemUpdated(
+  async itemUpdated(
     item: TodoItem,
     { checked, text }: { checked: Boolean; text: String }
   ) {
@@ -89,9 +89,8 @@ export class ToDo extends LitElement {
       mutatedItem = Object.assign(item, { text });
     }
 
-    if (this.items) {
-      updateTodoItem(mutatedItem);
-    }
+    updateTodoItem(mutatedItem);
+    console.log(this.items);
   }
 
   render() {

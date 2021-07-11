@@ -96,7 +96,6 @@ describe('EditableCheck click event checked state', () => {
   beforeEach(async () => {
     element = await fixture(
       html`<editable-check
-        read-only=${true}
         edit-mode="display"
         text="Readonly text not editing"
       ></editable-check>`
@@ -126,13 +125,22 @@ describe('EditableCheck click event checked state', () => {
           composed: false,
         })
       );
+      expect(check.checked).to.equal(true);
 
       // Ugly. Check later how to use proper licecycle events
       setTimeout(() => {
         // Checkbox has been clicked and is now clicked (true)
         expect(element.editMode).to.equal('display');
-        expect(editableInlineText.editMode).to.equal('readOnlyDisplay');
-        expect(editableInlineText.textDecoration).to.equal('line-through');
+        const editableInlineTextAfterSelect = element.shadowRoot!.querySelector(
+          'editable-inline-text'
+        )!;
+
+        expect(editableInlineTextAfterSelect.editMode).to.equal(
+          'readOnlyDisplay'
+        );
+        expect(editableInlineTextAfterSelect.textDecoration).to.equal(
+          'line-through'
+        );
 
         // click (check false)
         check.dispatchEvent(
@@ -145,8 +153,11 @@ describe('EditableCheck click event checked state', () => {
         setTimeout(() => {
           // clicked again and now it is unchecked (false)
           expect(element.editMode).to.equal('display');
-          expect(editableInlineText.editMode).to.equal('display');
-          expect(editableInlineText.textDecoration).to.equal('');
+          const editableInlineTextAfterUnselect =
+            element.shadowRoot!.querySelector('editable-inline-text')!;
+
+          expect(editableInlineTextAfterUnselect.editMode).to.equal('display');
+          expect(editableInlineTextAfterUnselect.textDecoration).to.equal('');
 
           resolve('');
         }, 200);

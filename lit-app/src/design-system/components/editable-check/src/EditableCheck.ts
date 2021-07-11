@@ -68,6 +68,22 @@ export class EditableCheck extends EditableInlineText {
     if (this.checked) {
       computedEditMode = 'readOnlyDisplay';
       computedTextDecoration = 'line-through';
+
+      // needs improvement: currently didn't find a better way to render the "checked" attribute
+      return html`<input
+          type="checkbox"
+          ?disabled=${this.isReadOnly()}
+          checked="checked"
+          aria-label="click to mark the item"
+          @click=${() => {
+            this.checked = !this._checked;
+          }}
+        /><editable-inline-text
+          text=${this.text}
+          edit-mode=${computedEditMode}
+          text-decoration=${computedTextDecoration}
+          @editModeChanged=${this.editModeChanged}
+        ></editable-inline-text>`;
     }
 
     // This is not good, because is duplicating, but didn't found yet
