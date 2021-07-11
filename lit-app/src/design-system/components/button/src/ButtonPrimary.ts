@@ -9,9 +9,9 @@ export class ButtonPrimary extends LitElement {
       css`
         :host button {
           border: 0;
-          background-color: rgb(239, 68, 68);
+          background-color: rgb(37, 99, 235);
           color: white;
-          border: 1px solid rgb(220, 38, 38);
+          border: 0;
           padding: 0.5rem;
           font-size: 16px;
           border-radius: 0.25rem;

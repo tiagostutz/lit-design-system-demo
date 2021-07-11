@@ -1,6 +1,7 @@
 import { LitElement, html, property, customElement, css } from 'lit-element';
 import {
   createNewItem,
+  deleteItem,
   getCurrentItems,
   TodoItem,
   updateTodoItem,
@@ -40,6 +41,13 @@ export class ToDo extends LitElement {
     this.items = [...(await getCurrentItems())];
   }
 
+  async removeItem(item: TodoItem) {
+    await deleteItem(item);
+
+    // reload items
+    this.items = [...(await getCurrentItems())];
+  }
+
   async itemChecked(item: TodoItem, checked: Boolean) {
     const mutatedItem = Object.assign(item, { checked });
     updateTodoItem(mutatedItem);
@@ -62,20 +70,29 @@ export class ToDo extends LitElement {
         ${this.items?.map(
           item =>
             html`<li>
-              <div class="flex flex-row">
+              <div class="flex flex-row items-center justify-start">
                 <editable-check
                   text=${item.text}
                   edit-mode=${evalEditMode(item)}
                   @checkToggled=${(e: any) =>
                     this.itemChecked(item, e.detail.checked)}
                 ></editable-check>
+                <button
+                  @click=${() => this.removeItem(item)}
+                  title="Remove this item"
+                  class="ml-1 cursor-pointer font-monospace bg-red-300 color-white border-0"
+                >
+                  X
+                </button>
               </div>
             </li>`
         )}
       </ul>
-      <button-primary @click=${() => this.addNewItem()}
-        >Add new Item</button-primary
-      >
+      <div class="mt-2">
+        <button-primary @click=${() => this.addNewItem()}
+          >Add new Item</button-primary
+        >
+      </div>
     `;
   }
 }

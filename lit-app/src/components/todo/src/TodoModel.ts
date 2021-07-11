@@ -39,3 +39,8 @@ export const updateTodoItem = (item: TodoItem) => {
   const elementIndex = database.findIndex(reg => reg.id === item.id);
   database[elementIndex] = JSON.parse(JSON.stringify(item)); // force replace with a new instance (clone)
 };
+
+export const deleteItem = (item: TodoItem) => {
+  const elementIndex = database.findIndex(reg => reg.id === item.id);
+  database.splice(elementIndex, 1);
+};
