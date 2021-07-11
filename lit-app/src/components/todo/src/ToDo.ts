@@ -52,7 +52,8 @@ export class ToDo extends LitElement {
   async addNewItem() {
     await createNewItem();
 
-    // reload items
+    // Reload items and force repaint because of a dirty shadow DOM update
+    // I currently couldn't fix
     this.items = []; // this is ugly because makes the screen blink, but with direct assignment it was happening a "Shadow DOM dirty update"
     this.items = [...(await getCurrentItems())];
   }
@@ -65,7 +66,8 @@ export class ToDo extends LitElement {
   async removeItem(item: TodoItem) {
     await deleteItem(item);
 
-    // Reload items.
+    // Reload items and force repaint because of a dirty shadow DOM update
+    // I currently couldn't fix
     this.items = []; // this is ugly because makes the screen blink, but with direct assignment it was happening a "Shadow DOM dirty update"
     this.items = [...(await getCurrentItems())];
   }
@@ -89,8 +91,9 @@ export class ToDo extends LitElement {
       mutatedItem = Object.assign(item, { text });
     }
 
-    updateTodoItem(mutatedItem);
-    console.log(this.items);
+    if (this.items) {
+      updateTodoItem(mutatedItem);
+    }
   }
 
   render() {
