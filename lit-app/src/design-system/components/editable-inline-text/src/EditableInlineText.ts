@@ -1,4 +1,5 @@
-import { LitElement, html, customElement, property, css } from 'lit-element';
+import { LitElement, html, customElement, property } from 'lit-element';
+import { designSystem } from '../../../style';
 import { TextDecoration } from '../../common-types/text';
 
 /**
@@ -13,11 +14,7 @@ export type EditMode = 'edit' | 'display' | 'readOnlyEdit' | 'readOnlyDisplay';
 @customElement('editable-inline-text')
 export class EditableInlineText extends LitElement {
   static get styles() {
-    return css`
-      .line-through {
-        text-decoration: line-through;
-      }
-    `;
+    return [designSystem];
   }
 
   @property({ attribute: 'text-decoration' })

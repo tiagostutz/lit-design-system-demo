@@ -1,34 +1,43 @@
 import { LitElement, html, property, customElement, css } from 'lit-element';
-import { getCurrentItems, TodoItem, updateTodoItem } from './TodoModel';
+import {
+  createNewItem,
+  getCurrentItems,
+  TodoItem,
+  updateTodoItem,
+} from './TodoModel';
 import '../../../design-system/components/editable-check';
 import '../../../design-system/components/button';
+import { designSystem } from '../../../design-system/style';
 
 @customElement('to-do')
 export class ToDo extends LitElement {
   static get styles() {
-    return css`
-      :host h3 {
-        margin-bottom: 1rem;
-      }
-      :host ul {
-        margin: 0;
-        padding: 0;
-      }
-      :host li {
-        list-style: none;
-        margin-bottom: 0.5rem;
-      }
-    `;
+    return [
+      designSystem,
+      css`
+        :host h3 {
+          margin-bottom: 1rem;
+        }
+        :host ul {
+          margin: 0;
+          padding: 0;
+        }
+        :host li {
+          list-style: none;
+          margin-bottom: 0.5rem;
+        }
+      `,
+    ];
   }
 
   @property()
   items: Array<TodoItem> = [];
 
-  addNewItem() {
-    this.items = [
-      ...this.items,
-      { id: new Date().getTime(), done: false, text: '' },
-    ];
+  async addNewItem() {
+    await createNewItem();
+
+    // reload items
+    this.items = [...(await getCurrentItems())];
   }
 
   async itemChecked(item: TodoItem, checked: Boolean) {
@@ -53,12 +62,14 @@ export class ToDo extends LitElement {
         ${this.items?.map(
           item =>
             html`<li>
-              <editable-check
-                text=${item.text}
-                edit-mode=${evalEditMode(item)}
-                @checkToggled=${(e: any) =>
-                  this.itemChecked(item, e.detail.checked)}
-              ></editable-check>
+              <div class="flex flex-row">
+                <editable-check
+                  text=${item.text}
+                  edit-mode=${evalEditMode(item)}
+                  @checkToggled=${(e: any) =>
+                    this.itemChecked(item, e.detail.checked)}
+                ></editable-check>
+              </div>
             </li>`
         )}
       </ul>

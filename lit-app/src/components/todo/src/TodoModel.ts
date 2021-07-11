@@ -14,8 +14,21 @@ const database: Array<TodoItem> = [
  */
 export const getCurrentItems = (): Promise<Array<TodoItem>> =>
   new Promise<Array<TodoItem>>(resolve => {
-    // Emulate like a HTTP request (latency)
-    setTimeout(() => resolve(database), 1500 * Math.random());
+    // Emulate like a HTTP request (latency from 0..1000ms)
+    setTimeout(() => resolve(database), 200 * Math.random());
+  });
+
+export const createNewItem = (): Promise<TodoItem> =>
+  new Promise<TodoItem>(resolve => {
+    setTimeout(
+      // Emulate like a HTTP request (latency from 0..1000ms)
+      () => {
+        const createdItem = { id: new Date().getTime(), done: false, text: '' };
+        database.push(createdItem);
+        resolve(createdItem);
+      },
+      200 * Math.random()
+    );
   });
 
 /**
