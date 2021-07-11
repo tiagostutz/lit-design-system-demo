@@ -21,7 +21,7 @@ export class EditableInlineText extends LitElement {
   }
 
   @property({ attribute: 'text-decoration' })
-  textDecoration!: TextDecoration;
+  textDecoration: TextDecoration = '';
 
   @property({ reflect: true })
   text: String = '';

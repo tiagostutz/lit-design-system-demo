@@ -1,1 +1,1 @@
-export type TextDecoration = 'line-through' | 'underline';
+export type TextDecoration = 'line-through' | 'underline' | '';

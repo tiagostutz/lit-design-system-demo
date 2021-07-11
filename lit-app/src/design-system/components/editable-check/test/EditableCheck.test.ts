@@ -129,8 +129,10 @@ describe('EditableCheck click event checked state', () => {
 
       // Ugly. Check later how to use proper licecycle events
       setTimeout(() => {
+        // Checkbox has been clicked and is now clicked (true)
         expect(element.editMode).to.equal('display');
         expect(editableInlineText.editMode).to.equal('readOnlyDisplay');
+        expect(editableInlineText.textDecoration).to.equal('line-through');
 
         // click (check false)
         check.dispatchEvent(
@@ -141,8 +143,10 @@ describe('EditableCheck click event checked state', () => {
           })
         );
         setTimeout(() => {
+          // clicked again and now it is unchecked (false)
           expect(element.editMode).to.equal('display');
           expect(editableInlineText.editMode).to.equal('display');
+          expect(editableInlineText.textDecoration).to.equal('');
 
           resolve('');
         });

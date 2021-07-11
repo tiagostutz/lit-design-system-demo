@@ -44,7 +44,7 @@ export class EditableCheck extends EditableInlineText {
 
   render() {
     let computedEditMode = this.editMode;
-    let computedTextDecoration!: TextDecoration;
+    let computedTextDecoration: TextDecoration = '';
     if (this.checked) {
       computedEditMode = 'readOnlyDisplay';
       computedTextDecoration = 'line-through';
