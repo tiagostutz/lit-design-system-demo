@@ -149,7 +149,7 @@ describe('EditableCheck click event checked state', () => {
           expect(editableInlineText.textDecoration).to.equal('');
 
           resolve('');
-        });
-      }, 100);
+        }, 200);
+      }, 200);
     }));
 });

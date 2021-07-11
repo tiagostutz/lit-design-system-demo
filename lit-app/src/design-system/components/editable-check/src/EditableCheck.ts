@@ -32,11 +32,11 @@ export class EditableCheck extends EditableInlineText {
       },
     });
 
-    if (newValue !== oldValue) {
-      this.dispatchEvent(event);
-    }
-
-    this.requestUpdate('checked', oldValue);
+    this.requestUpdate('checked', oldValue).then(() => {
+      if (newValue !== oldValue) {
+        this.dispatchEvent(event);
+      }
+    });
   }
 
   get checked() {
@@ -46,6 +46,23 @@ export class EditableCheck extends EditableInlineText {
   @query('input')
   _inputCheck!: HTMLInputElement;
 
+  editModeChanged(e: any) {
+    if (
+      e.detail.newValue === 'display' &&
+      e.detail.oldValue !== 'readOnlyDisplay'
+    ) {
+      // if the editMode changed to `display`, then that's a confirmation of a text typed
+      // so, fire an event of this update
+      const event = new CustomEvent('textChanged', {
+        detail: {
+          text: e.target.text,
+        },
+      });
+
+      this.dispatchEvent(event);
+    }
+  }
+
   render() {
     let computedEditMode = this.editMode;
     let computedTextDecoration: TextDecoration = '';
@@ -54,6 +71,8 @@ export class EditableCheck extends EditableInlineText {
       computedTextDecoration = 'line-through';
     }
 
+    // This is not good, because is duplicating, but didn't found yet
+    // a good way to handle the "checked" attribute dynamically
     return html`<input
         type="checkbox"
         ?disabled=${this.isReadOnly()}
@@ -65,6 +84,7 @@ export class EditableCheck extends EditableInlineText {
         text=${this.text}
         edit-mode=${computedEditMode}
         text-decoration=${computedTextDecoration}
+        @editModeChanged=${this.editModeChanged}
       ></editable-inline-text>`;
   }
 }

@@ -16,8 +16,9 @@ export class ToDo extends LitElement {
     return [
       designSystem,
       css`
-        :host h3 {
+        :host h2 {
           margin-bottom: 1rem;
+          font-size: 21px;
         }
         :host ul {
           margin: 0;
@@ -48,12 +49,22 @@ export class ToDo extends LitElement {
     this.items = [...(await getCurrentItems())];
   }
 
-  async itemChecked(item: TodoItem, checked: Boolean) {
-    const mutatedItem = Object.assign(item, { checked });
+  async itemUpdated(
+    item: TodoItem,
+    { checked, text }: { checked: Boolean; text: String }
+  ) {
+    let mutatedItem = Object.assign(item, {});
+    if (checked) {
+      mutatedItem = Object.assign(item, { done: checked });
+    }
+    if (text) {
+      mutatedItem = Object.assign(item, { text });
+    }
+
     updateTodoItem(mutatedItem);
 
     // reload items
-    this.items = await getCurrentItems();
+    this.items = [...(await getCurrentItems())];
   }
 
   render() {
@@ -65,7 +76,7 @@ export class ToDo extends LitElement {
     };
 
     return html`
-      <h3>${this.items?.length} items</h3>
+      <h2>${this.items?.length} items</h2>
       <ul>
         ${this.items?.map(
           item =>
@@ -74,8 +85,9 @@ export class ToDo extends LitElement {
                 <editable-check
                   text=${item.text}
                   edit-mode=${evalEditMode(item)}
-                  @checkToggled=${(e: any) =>
-                    this.itemChecked(item, e.detail.checked)}
+                  .checked=${item.done}
+                  @checkToggled=${(e: any) => this.itemUpdated(item, e.detail)}
+                  @textChanged=${(e: any) => this.itemUpdated(item, e.detail)}
                 ></editable-check>
                 <button
                   @click=${() => this.removeItem(item)}

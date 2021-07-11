@@ -35,15 +35,17 @@ export class EditableInlineText extends LitElement {
 
   set editMode(value: EditMode) {
     const oldValue = this._editMode;
+    const newValue = value;
 
     const event = new CustomEvent('editModeChanged', {
       detail: {
-        editMode: value,
+        oldValue,
+        newValue,
       },
     });
 
     this._editMode = value;
-    if (value !== oldValue) {
+    if (newValue !== oldValue) {
       this.dispatchEvent(event);
     }
     this.requestUpdate('editMode', oldValue);

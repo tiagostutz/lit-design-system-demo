@@ -42,5 +42,6 @@ export const updateTodoItem = (item: TodoItem) => {
 
 export const deleteItem = (item: TodoItem) => {
   const elementIndex = database.findIndex(reg => reg.id === item.id);
+
   database.splice(elementIndex, 1);
 };

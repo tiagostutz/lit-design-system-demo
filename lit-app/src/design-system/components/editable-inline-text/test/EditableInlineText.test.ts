@@ -153,7 +153,8 @@ describe('EditableInlineText Enter triggered', () => {
 describe('EditableInlineText editModeChanged fired', () => {
   let element: EditableInlineText;
   const _handleEditModeChanged = (e: any) => {
-    expect(e.detail.editMode).to.equal('display');
+    expect(e.detail.oldValue).to.equal('edit');
+    expect(e.detail.newValue).to.equal('display');
   };
   beforeEach(async () => {
     element = await fixture(
