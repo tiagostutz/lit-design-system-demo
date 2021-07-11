@@ -7,7 +7,7 @@ export type TodoItem = {
 const database: Array<TodoItem> = [
   { id: 1, text: 'Buy milk', done: false },
   { id: 2, text: 'Take the dog for a walk', done: false },
-  { id: 3, text: 'Do the dishes', done: true },
+  { id: 3, text: 'Do the dishes', done: false },
 ];
 /**
  * Emulating like it would go to a backend to fetch the current items
