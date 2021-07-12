@@ -22,9 +22,18 @@ yarn run start
 
 This will start the project in development mode and will open on the browser the application running.
 
+### Tests
+
+To run all the tests, at the **lit-app** folder:
+
+```bash
+yarn run test
+```
+
 ### Storybook
 
-To check the storybook of components, run:
+To check the storybook of components, at the **lit-app** folder:
+
 ```bash
 yarn run storybook
 ```
@@ -32,12 +41,12 @@ yarn run storybook
 ### Running production code
 To run a production code you have two options:
 
-Preview with web-dev-server:
+Preview with web-dev-server, at the **lit-app** folder:
 ```bash
 yarn run start:build
 ```
 
-Docker image with NGinx
+Docker image with NGinx, at the root folder:
 ```bash
 docker-compose up --build
 ```
